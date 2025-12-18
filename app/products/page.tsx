@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import ProductGrid from "@/components/products/ProductGrid";
 import { ssrGetProducts } from "@/services/products.server.service";
 
