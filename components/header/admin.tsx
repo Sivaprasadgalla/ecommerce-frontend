@@ -1,12 +1,14 @@
 "use client";
 
+import Link from "next/link";
+
 type Props = {
   onToggleSidebar: () => void;
 };
 
 export default function AdminHeader({ onToggleSidebar }: Props) {
   return (
-    <header className="fixed inset-x-0 top-0 z-30 flex items-center justify-between h-16 bg-white border-b border-gray-200 px-4 lg:px-6">
+    <header className="sticky bg-[#0070f3] fixed inset-x-0 top-0 z-30 flex items-center justify-between h-16 border-b border-gray-200 px-4 lg:px-6">
       {/* left: hamburger + brand */}
       <div className="flex items-center gap-3">
         <button
@@ -22,21 +24,15 @@ export default function AdminHeader({ onToggleSidebar }: Props) {
 
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-md bg-indigo-600 flex items-center justify-center text-white font-semibold">A</div>
-          <span className="text-lg font-semibold text-gray-800">Admin Panel</span>
+          <span className="text-lg font-semibold text-white">Admin Panel</span>
         </div>
       </div>
 
-      {/* center: search (hidden on very small screens) */}
-      <div className="hidden sm:flex items-center bg-gray-50 border border-gray-200 rounded-md px-3 py-2 w-80">
-        <svg className="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15z" />
-        </svg>
-        <input
-          className="ml-2 w-full bg-transparent outline-none text-sm text-gray-700"
-          type="text"
-          placeholder="Search..."
-          aria-label="Search"
-        />
+      {/* center: menu items (hidden on very small screens) */}
+      <div className="hidden lg:flex lg:gap-x-12">
+        <Link href="/admin/products" className="text-sm/6 font-semibold text-white">Products</Link>
+        <Link href="/admin/users" className="text-sm/6 font-semibold text-white">Users</Link>
+        <Link href="/admin/orders" className="text-sm/6 font-semibold text-white">Orders</Link>
       </div>
 
       {/* right: notifications + profile */}
@@ -64,6 +60,7 @@ export default function AdminHeader({ onToggleSidebar }: Props) {
           </button>
         </div>
       </div>
+
     </header>
   );
 }

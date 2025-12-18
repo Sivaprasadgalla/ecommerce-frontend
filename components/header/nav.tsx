@@ -3,11 +3,12 @@
 import { removeToken } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const NavHeader = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const [token, setToken] = useState<string | null>(null);
 
   // Run on client after mount
@@ -21,8 +22,11 @@ const NavHeader = () => {
     removeToken();
     setToken(null); // update state
   };
+
+  const isAdmin = pathname.startsWith("/admin");
+
   return (
-    <header className="sticky bg-[#0070f3] absolute inset-x-0 top-0 z-50">
+    <header className={`sticky bg-[#0070f3] absolute inset-x-0 top-0 z-50 ${isAdmin ? "hidden" : ""}`}>
         <nav aria-label="Global" className="flex items-center justify-between p-6 lg:px-8">
           <div className="flex lg:flex-1">
             <a href="#" className="-m-1.5 p-1.5">
@@ -45,7 +49,7 @@ const NavHeader = () => {
         </button>
       </div>
       <div className="hidden lg:flex lg:gap-x-12">
-        <Link href="/" className="text-sm/6 font-semibold text-white">Product</Link>
+        <Link href="/products" className="text-sm/6 font-semibold text-white">Product</Link>
         <Link href="/" className="text-sm/6 font-semibold text-white">Features</Link>
         <Link href="/" className="text-sm/6 font-semibold text-white">Marketplace</Link>
         <Link href="/" className="text-sm/6 font-semibold text-white">Company</Link>

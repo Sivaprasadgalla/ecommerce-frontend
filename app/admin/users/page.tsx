@@ -2,11 +2,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { createUser, deleteUser, getUsers, updateUser, User } from "@/services/user.service";
 
 export default function AdminUsersPage() {
-  const router = useRouter();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -83,7 +81,7 @@ export default function AdminUsersPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Users</h1>
+        <h1 className="text-2xl font-semibold text-black">Users</h1>
         <button onClick={startCreate} className="bg-indigo-600 text-white px-3 py-2 rounded-md text-sm hover:bg-indigo-700">
           + Create user
         </button>

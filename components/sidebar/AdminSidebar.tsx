@@ -13,6 +13,8 @@ export default function AdminSidebar({ open, onClose }: Props) {
   const items: Item[] = [
     { name: "Dashboard", href: "/admin", icon: dashboardIcon() },
     { name: "Users", href: "/admin/users", icon: usersIcon() },
+    { name: "Products", href: "/admin/products", icon: productsIcon() },
+    { name: "Orders", href: "/admin/orders", icon: ordersIcon() },
     { name: "Settings", href: "/admin/settings", icon: settingsIcon() },
   ];
 
@@ -74,6 +76,20 @@ function settingsIcon() {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-5 h-5">
       <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M12 15.5a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" />
       <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06A2 2 0 014.27 16.9l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82L4.27 4.27A2 2 0 017.1 1.44l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V1a2 2 0 014 0v.09c.12.62.54 1.12 1 1.51h.11a1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82v.11c.39.46.9.88 1.51 1V9a2 2 0 010 4h-.09c-.62.12-1.12.54-1.51 1z" />
+    </svg>
+  );
+}
+function ordersIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-5 h-5">
+      <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M3 7h18M3 12h18M3 17h18" />
+    </svg>
+  );
+}
+function productsIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-5 h-5">
+      <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M20 13V7a2 2 0 00-2-2H6a2 2 0 00-2 2v6m16 0v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6m16 0H4" />
     </svg>
   );
 }

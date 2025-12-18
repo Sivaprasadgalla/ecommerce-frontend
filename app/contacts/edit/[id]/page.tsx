@@ -11,7 +11,6 @@ const EditContact = () => {
   const router = useRouter();
   const params = useParams();
   const id = String(params.id); // get contact id from URL
-  console.log(id);
 
   const [form, setForm] = useState({ name: "", email: "", phone: "" });
   const [loading, setLoading] = useState(false);
