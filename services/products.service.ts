@@ -18,6 +18,7 @@ export type ProductResponse = {
   product: Product;
 };
 
+// public route
 export const getProducts = async (): Promise<Product[]> => {
     const res = await api.get<ProductsResponse>("/products");
     if (res.status !== 200) {
@@ -26,6 +27,7 @@ export const getProducts = async (): Promise<Product[]> => {
     return res.data.products;
 };
 
+// public route
 export const getProductById = async (id: string): Promise<Product> => {
     const res = await api.get<ProductResponse>(`/products/${id}`);
     if (res.status !== 200) {
@@ -34,6 +36,7 @@ export const getProductById = async (id: string): Promise<Product> => {
     return res.data.product;
 };
 
+// admin route
 export const createProduct = async (data: { name: string; description: string; price: number; image: string; stock: number }): Promise<Product> => {
     const res = await api.post<Product>("/products/add", data);
     console.log(res);
@@ -44,6 +47,7 @@ export const createProduct = async (data: { name: string; description: string; p
     return res.data;
 };
 
+// admin route
 export const updateProduct = async (id: string, data: { name?: string; description?: string; price?: number; image?: string; stock?: number }): Promise<Product> => {
     const res = await api.put<Product>(`/products/update/${id}`, data);
     if (res.status !== 200) {
@@ -52,6 +56,7 @@ export const updateProduct = async (id: string, data: { name?: string; descripti
     return res.data;
 };
 
+// admin route
 export const deleteProduct = async (id: string): Promise<void> => {
     const res = await api.delete<void>(`/products/delete/${id}`);
     if (res.status !== 200) {

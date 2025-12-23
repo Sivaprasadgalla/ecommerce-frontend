@@ -1,6 +1,7 @@
 import ProductDetail from "@/components/products/ProductDetail";
 import { ssrGetProductById } from "@/services/products.server.service";
 import { Product } from "@/services/products.service";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type Props = {
@@ -25,9 +26,9 @@ export default async function ProductPage(props: Props) {
   return (
     <main className="max-w-5xl mx-auto px-4 py-10">
       <nav className="text-sm mb-6 text-gray-500">
-        <a href="/products" className="hover:underline">Products</a>
+        <Link href="/products" className="hover:underline">Products</Link>
         <span className="mx-2">/</span>
-        <span className="text-gray-900">{product.name}</span>
+        <span className="text-gray-500">{product.name}</span>
       </nav>
 
       <ProductDetail product={product} />

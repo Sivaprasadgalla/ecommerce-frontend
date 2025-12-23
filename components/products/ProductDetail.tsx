@@ -1,17 +1,18 @@
 "use client";
 
+import { addToCart } from "@/services/cart.service";
 import { Product } from "@/services/products.service";
+import { getGuestSessionId } from "@/utils/guestSession";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 type Props = {
   product: Product;
-  onAddToCart?: (payload: { productId: string; qty: number }) => void;
 };
 
 const WISHLIST_KEY = "wishlist_v1";
 
-export default function ProductDetailClient({ product, onAddToCart }: Props) {
+export default function ProductDetailClient({ product }: Props) {
   const [qty, setQty] = useState<number>(1);
   const [wishlist, setWishlist] = useState<Record<string, true>>(() => {
     try {
@@ -24,15 +25,27 @@ export default function ProductDetailClient({ product, onAddToCart }: Props) {
       return {};
     }
   });
-//   const [activeImg, setActiveImg] = useState<string>(
-//     product.image
-//   );
+
+  const guestSessionId = getGuestSessionId();
+  //   const [activeImg, setActiveImg] = useState<string>(
+  //     product.image
+  //   );
 
   useEffect(() => {
     try {
       localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist));
     } catch {}
   }, [wishlist]);
+
+  const onAddToCart = async (item: { productId: string; qty: number }) => {
+    try {
+      const cart = await addToCart(guestSessionId, item.productId, item.qty);
+      alert("Product added to cart");
+      console.log("Cart after adding product:", cart);
+    } catch (err){
+      console.error("Failed to add product to cart", err);
+    }
+  }
 
   const toggleWishlist = () => {
     setWishlist((prev) => {
@@ -135,7 +148,7 @@ export default function ProductDetailClient({ product, onAddToCart }: Props) {
             ))}
           </div>
         )} */}
-        <Image
+        {/* <Image
             src={product.image}
             alt={product.name}
             width={100}
@@ -144,7 +157,7 @@ export default function ProductDetailClient({ product, onAddToCart }: Props) {
             quality={100}
             className="w-full h-full object-cover"
             loading="lazy"
-        />
+        /> */}
       </div>
 
       {/* Info + actions */}
@@ -167,46 +180,6 @@ export default function ProductDetailClient({ product, onAddToCart }: Props) {
               {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
             </div>
           </div>
-
-          <div className="flex items-center gap-3">
-            <div className="flex items-center rounded-md border w-max">
-              <button
-                onClick={dec}
-                className="px-3 py-2 text-sm disabled:opacity-50"
-                aria-label="Decrease quantity"
-                disabled={qty <= 1}
-              >
-                −
-              </button>
-              <div className="px-4 py-2 text-sm min-w-[2rem] text-center">
-                {qty}
-              </div>
-              <button
-                onClick={inc}
-                className="px-3 py-2 text-sm"
-                aria-label="Increase quantity"
-                disabled={qty >= (product.stock || 99)}
-              >
-                +
-              </button>
-            </div>
-
-            <button
-              onClick={() =>
-                onAddToCart
-                  ? onAddToCart({ productId: product._id, qty })
-                  : alert(`Add ${qty}x ${product.name} to cart`)
-              }
-              disabled={product.stock <= 0}
-              className={`px-4 py-2 rounded-md text-sm font-medium shadow-sm ${
-                product.stock > 0
-                  ? "bg-blue-600 text-white hover:bg-blue-700"
-                  : "bg-gray-100 text-gray-400 cursor-not-allowed"
-              }`}
-            >
-              Add to cart
-            </button>
-          </div>
         </div>
 
         {/* Extra details */}
@@ -226,6 +199,44 @@ export default function ProductDetailClient({ product, onAddToCart }: Props) {
                 : "—"}
             </li>
           </ul>
+        </div>
+
+                <div className="flex items-center gap-3">
+          <div className="flex items-center rounded-md border w-max">
+            <button
+              onClick={dec}
+              className="px-3 py-2 text-sm disabled:opacity-50"
+              aria-label="Decrease quantity"
+              disabled={qty <= 1}
+            >
+              −
+            </button>
+            <div className="px-4 py-2 text-sm min-w-[2rem] text-center">
+              {qty}
+            </div>
+            <button
+              onClick={inc}
+              className="px-3 py-2 text-sm"
+              aria-label="Increase quantity"
+              disabled={qty >= (product.stock || 99)}
+            >
+              +
+            </button>
+          </div>
+
+          <button
+            onClick={() =>
+              onAddToCart({ productId: product._id, qty })
+            }
+            disabled={product.stock <= 0}
+            className={`px-4 py-2 rounded-md text-sm font-medium shadow-sm ${
+              product.stock > 0
+                ? "bg-blue-600 text-white hover:bg-blue-700"
+                : "bg-gray-100 text-gray-400 cursor-not-allowed"
+            }`}
+          >
+            Add to cart
+          </button>
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { login } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 import { removeToken } from "@/utils";
+import { clearGuestSessionId, getGuestSessionId } from "@/utils/guestSession";
 
 const Login = () => {
   const router = useRouter();
@@ -15,11 +16,13 @@ const Login = () => {
   const [serverError, setServerError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const guestSessionId = getGuestSessionId();
+
   // Redirect if already logged in
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      router.push("/contacts");
+    const userToken = localStorage.getItem("user");
+    if (userToken !== "undefined" && userToken === "admin") {
+      router.push("/admin");
     }
   }, [router]);
 
@@ -49,13 +52,14 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const user = await login(form);
+      const user = await login(form, guestSessionId);
       if (user.user.role !== "user") {
         router.push("/admin");
         setLoading(false);
         return;
       }
-      router.push("/contacts");
+      // After successful merge
+    clearGuestSessionId();
     } catch (err: any) {
       if (err.response?.status === 401) {
         removeToken();

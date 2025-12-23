@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { addToCart } from "@/services/cart.service";
+import { getGuestSessionId } from "@/utils/guestSession";
 
 export type Product = {
   _id: string;
@@ -14,12 +16,11 @@ export type Product = {
 
 type Props = {
   products: Product[];
-  onAddToCart?: (product: Product) => void; // optional handler
 };
 
 const WISHLIST_KEY = "wishlist_v1";
 
-export default function ProductGrid({ products, onAddToCart }: Props) {
+export default function ProductGrid({ products }: Props) {
   const [wishlist, setWishlist] = useState<Record<string, true>>(() => {
     try {
       const raw = typeof window !== "undefined" ? localStorage.getItem(WISHLIST_KEY) : null;
@@ -29,6 +30,8 @@ export default function ProductGrid({ products, onAddToCart }: Props) {
     }
   });
 
+  const guestSessionId = getGuestSessionId();
+
   useEffect(() => {
     try {
       localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist));
@@ -36,6 +39,15 @@ export default function ProductGrid({ products, onAddToCart }: Props) {
       // ignore
     }
   }, [wishlist]);
+
+  const onAddToCart = async(productId: string, quantity: number) => {
+    try {
+      const cart = await addToCart(guestSessionId, productId, quantity);
+      console.log("Cart after adding product:", cart);
+    } catch {
+      console.error("Failed to add product to cart");
+    }
+  }
 
   const toggleWishlist = (id: string) => {
     setWishlist((prev) => {
@@ -88,7 +100,7 @@ export default function ProductGrid({ products, onAddToCart }: Props) {
                 </Link>
 
                 <button
-                  onClick={() => onAddToCart ? onAddToCart(p) : alert(`Add ${p.name} to cart (example)`)}
+                  onClick={() => onAddToCart(p._id, 1)}
                   disabled={p.stock <= 0}
                   className={`inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium shadow-sm ${
                     p.stock > 0 ? "bg-blue-600 text-white hover:bg-blue-700" : "bg-white/90 text-gray-400 cursor-not-allowed"

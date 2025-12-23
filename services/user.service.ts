@@ -12,6 +12,7 @@ export type UsersResponse = {
   users: User[];
 };
 
+// admin route
 export const createUser = async (data: { username: string; email: string; password: string; role: string }): Promise<User> => {
     const res = await api.post<User>("/users/new", data);
     if (res.status !== 201) {
@@ -20,6 +21,7 @@ export const createUser = async (data: { username: string; email: string; passwo
     return res.data;
 };
 
+// admin route
 export const getUsers = async (): Promise<User[]> => {
     const res = await api.get<UsersResponse>("/users");
     if (res.status !== 200) {
@@ -28,6 +30,7 @@ export const getUsers = async (): Promise<User[]> => {
     return res.data.users;
 };
 
+// admin route
 export const updateUser = async (id: string, data: { username?: string; email?: string; role?: string; password?: string }): Promise<User> => {
     const res = await api.put<User>(`/users/update/${id}`, data);
     if (res.status !== 200) {
@@ -36,6 +39,7 @@ export const updateUser = async (id: string, data: { username?: string; email?: 
     return res.data;
 };
 
+// admin route
 export const deleteUser = async (id: string): Promise<void> => {
     const res = await api.delete<void>(`/users/delete/${id}`);
     if (res.status !== 200) {
@@ -43,6 +47,7 @@ export const deleteUser = async (id: string): Promise<void> => {
     }
 };
 
+// admin route
 export const getUserById = async (id: string): Promise<User> => {
     const res = await api.get<User>(`/users/${id}`);
     if (res.status !== 200) {
@@ -51,6 +56,7 @@ export const getUserById = async (id: string): Promise<User> => {
     return res.data;
 };
 
+// public route
 export const removeToken = () => {
   if (typeof window !== "undefined") {
     localStorage.removeItem("token");
